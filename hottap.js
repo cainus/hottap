@@ -1,5 +1,6 @@
 const node_url = require('url');
 const http = require('http');
+const https = require('https');
 
 function HotTap(url){
   return new Url(url);
@@ -66,7 +67,7 @@ var url_request = function(){
 
   // the third param should be the body if it's not the callback.
   if (arguments.length > 3){
-    body = arguments[2];
+    var body = arguments[2];
   }
 
 
@@ -77,7 +78,8 @@ var url_request = function(){
       method: method
     };
 
-    var req = http.request(options, function(res) {
+    var protocol_lib = (this.protocol == 'https') ? https : http;
+    var req = protocol_lib.request(options, function(res) {
       res.setEncoding('utf8');
       res.on('data', function (chunk) {
         var response = {"status" : res.statusCode, "headers" : res.headers, "body" : chunk };
@@ -108,7 +110,8 @@ var url_toString = function(){
     qstr = '?' + qstr;
   }
   var hashstr = (this.hash == '') ? '' : '#' + this.hash;
-  return this.protocol + '://' + this.hostname + portstr + this.path + qstr + hashstr;
+  var authstr = (this.auth == '') ? '' : this.auth + '@';
+  return this.protocol + '://' + authstr + this.hostname + portstr + this.path + qstr + hashstr;
 }
 
 var Url = function(url){
@@ -127,6 +130,7 @@ var Url = function(url){
   }
   this.hostname = o.hostname;
   this.port = getPort(o);
+  this.auth = o.auth || '';
   //console.log(o);
   this.path = o.pathname || '/';
 }

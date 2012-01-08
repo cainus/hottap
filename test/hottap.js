@@ -1,5 +1,6 @@
 const should = require('should');
 var http = require('http');
+var https = require('https');
 const HotTap = require('../hottap').HotTap;
 
 
@@ -8,6 +9,7 @@ describe('HotTap', function(){
 
   it('should return its url as a string', function(done){
     HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
+    HotTap("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
     HotTap("http://asdf.com").toString().should.equal("http://asdf.com/")
     done();
   });
@@ -15,6 +17,11 @@ describe('HotTap', function(){
   it('should return its querystring as an object', function(done){
     HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.asdf.should.equal("1234")
     HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.qwer.should.equal("qwer")
+    done();
+  });
+  
+  it('should return its auth value as a string', function(done){
+    HotTap("http://someauth@asdf.com:8080/asdf#hash").auth.should.equal("someauth")
     done();
   });
 
@@ -103,110 +110,136 @@ describe('HotTap', function(){
       done();
   });
 
-  it('should support a simple GET request', function(done){
-    var  server = http.createServer(function (req, res) {
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('Hello World\n' + req.method);
-    })
+  describe('#request()', function(){
 
-    server.listen(1337, "127.0.0.1", function(){
+    it('should support a simple GET', function(done){
+      var  server = http.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      })
 
-        HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
-          response.body.should.equal('Hello World\nGET');
-          response.status.should.equal(200);
-          response.should.have.property('headers');
-          server.close();
+      server.listen(1337, "127.0.0.1", function(){
+
+          HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
+            if (!!error) { should.fail(error); }
+            response.body.should.equal('Hello World\nGET');
+            response.status.should.equal(200);
+            response.should.have.property('headers');
+            server.close();
+            done();
+          });
+
+      });
+    });
+
+    it('should throw an exception if it does not get a callback parameter', function(done){
+          try {
+            HotTap("http://127.0.0.1:1337").request("GET")
+            should.fail("exception was not raised")
+          } catch (err){
+            err.should.equal('request() expects a callback for the last parameter.')
+            done();
+          }
+    });
+
+    it('should support a GET with headers', function(done){
+      var server = http.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      });
+      server.listen(1337, "127.0.0.1", function(){
+
+          HotTap("http://127.0.0.1:1337/api/message/")
+            .request("GET", 
+                     {"Content-Type" : "application/json"}, 
+                     function(error, response){
+                        if (!!error) { should.fail(error); }
+                        response.body.should.equal('Hello World\nGET');
+                        response.status.should.equal(200);
+                        response.should.have.property('headers');
+                        server.close();
+                        done();
+                    }
+            );
+
+      });
+    });
+
+    it('should throw an error for requests with an invalid headers object', function(done){
+      try {
+          HotTap("http://127.0.0.1:1337/api/message/").request("GET", 42, 
+                   function(err, response){ should.fail("should not get this far!") }
+          );
+      } catch (err) {
+          err.should.equal("Argument Error: Expected an (headers) object for the second argument.");
           done();
-        });
-
+      }
     });
-  });
 
-  it('should throw an exception if it does not get a callback on a request', function(done){
-        try {
-          HotTap("http://127.0.0.1:1337").request("GET")
-          should.fail("exception was not raised")
-        } catch (err){
-          err.should.equal('request() expects a callback for the last parameter.')
-          done();
-        }
-  });
+    it('should support a POST with headers and body', function(done){
+      var server = http.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method );
+      });
+      server.listen(1337, "127.0.0.1", function(){
 
-  it('should support a GET request with headers', function(done){
-    var server = http.createServer(function (req, res) {
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('Hello World\n' + req.method);
+          HotTap("http://127.0.0.1:1337/api/message/")
+            .request("POST",
+                     {"Content-Type" : "application/json"},
+                     '{"some" : "json"}',
+                     function(error, response){
+                        if (!!error) { should.fail(error); }
+                        response.body.should.equal('Hello World\nPOST');
+                        response.status.should.equal(200);
+                        response.should.have.property('headers');
+                        server.close();
+                        done();
+                    }
+            );
+
+      });
     });
-    server.listen(1337, "127.0.0.1", function(){
 
-        HotTap("http://127.0.0.1:1337/api/message/")
-          .request("GET", 
-                   {"Content-Type" : "application/json"}, 
-                   function(err, response){
-                      response.body.should.equal('Hello World\nGET');
-                      response.status.should.equal(200);
-                      response.should.have.property('headers');
-                      server.close();
-                      done();
-				          }
-		      );
+    it('should return errors for failed requests', function(done){
+      var server = http.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      });
+      server.listen(1337, "127.0.0.1", function(){
 
+          HotTap("http://127.0.0.1:1337/api/message/")
+            .request("UNKNOWN_METHOD",
+                     {"content-type" : "application/json"},
+                     '{"some" : "json"}',
+                     function(err, response){
+                        err.should.have.property('message');
+                        server.close();
+                        done();
+                    }
+            );
+
+      });
     });
-  });
 
-  it('should throw an error for requests with an invalid headers object', function(done){
-    try {
-        HotTap("http://127.0.0.1:1337/api/message/").request("GET", 42, 
-                 function(err, response){ should.fail("should not get this far!") }
-        );
-    } catch (err) {
-        err.should.equal("Argument Error: Expected an (headers) object for the second argument.");
-        done();
-    }
-  });
+    it('should support GET via https' /* , function(done){
+      var server = https.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      })
 
-  it('should support a POST request with headers and body', function(done){
-    var server = http.createServer(function (req, res) {
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('Hello World\n' + req.method );
-    });
-    server.listen(1337, "127.0.0.1", function(){
+      server.listen(1337, "127.0.0.1", function(){
+          HotTap("https://127.0.0.1:1337").request("GET", function(error, response){
+            if (!!error) { should.fail(error); }
+            response.body.should.equal('Hello World\nGET');
+            response.status.should.equal(200);
+            response.should.have.property('headers');
+            server.close();
+            done();
+          });
 
-        HotTap("http://127.0.0.1:1337/api/message/")
-          .request("POST",
-                   {"Content-Type" : "application/json"},
-                   '{"some" : "json"}',
-                   function(err, response){
-                      response.body.should.equal('Hello World\nPOST');
-                      response.status.should.equal(200);
-                      response.should.have.property('headers');
-                      server.close();
-                      done();
-				          }
-		      );
+      });
+    }*/);
 
-    });
-  });
-
-  it('should return errors for failed requests', function(done){
-    var server = http.createServer(function (req, res) {
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('Hello World\n' + req.method);
-    });
-    server.listen(1337, "127.0.0.1", function(){
-
-        HotTap("http://127.0.0.1:1337/api/message/")
-          .request("UNKNOWN_METHOD",
-                   {"content-type" : "application/json"},
-                   '{"some" : "json"}',
-                   function(err, response){
-                      err.should.have.property('message');
-                      server.close();
-                      done();
-				          }
-		      );
-
-    });
   });
 
 });
