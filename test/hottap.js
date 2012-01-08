@@ -221,6 +221,7 @@ describe('HotTap', function(){
       });
     });
 
+    // pending because I don't know how to make an https server that listens
     it('should support GET via https' /* , function(done){
       var server = https.createServer(function (req, res) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -238,6 +239,34 @@ describe('HotTap', function(){
           });
 
       });
+    }*/);
+
+    it('should pass on the provided headers');  // how do I check this?  better server?
+
+    // pending because it takes too long, and mocha's timeout seems to be buggy
+    it('should handle large response bodies' /*, function(done){
+      this.timeout(10000);
+      var server = http.createServer(function (req, res) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        var long_string = '';
+        for(var i=0; i < 1000000; i++){
+          long_string += '1234567890'
+        }
+        res.end(long_string + '\n' + req.method);
+      })
+
+      server.listen(1337, "127.0.0.1", function(){
+          HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
+            if (!!error) { should.fail(error); }
+            response.body.length.should.equal(10000004);
+            response.status.should.equal(200);
+            response.should.have.property('headers');
+            server.close();
+            done();
+          });
+
+      });
+    
     }*/);
 
   });

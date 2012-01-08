@@ -75,16 +75,22 @@ var url_request = function(){
       host: this.hostname,
       port: this.port,
       path: this.path,
+      headers: headers,
       method: method
     };
 
     var protocol_lib = (this.protocol == 'https') ? https : http;
     var req = protocol_lib.request(options, function(res) {
       res.setEncoding('utf8');
+      var body = '';
       res.on('data', function (chunk) {
-        var response = {"status" : res.statusCode, "headers" : res.headers, "body" : chunk };
+        body += chunk;
+      });
+      res.on('end', function(){
+        var response = {"status" : res.statusCode, "headers" : res.headers, "body" : body };
         //console.log(response);
         cb(null, response);
+
       });
     });
 
