@@ -1,6 +1,43 @@
-running tests requires mocha:
+HotTap is an HTTP client library for node that just does what you expect.
 
-npm install -g mocha
+hottap.js has no dependencies other than the node standard library.
 
-then just run 'mocha' at the project root.
+Example Usage:
 
+Simple GET:
+Hottap("https://asdf.com/api/message/1").request("GET", function(err, response){
+  console.log(response.body);
+}
+
+Simple POST:
+Hottap("http://sdf.com/api/message/")
+		.request("POST", {"Content-Type" : "application/json"}, '{"subject":"blah"}', 
+				function(err, response){
+					console.log(response.status);
+				}
+;
+
+About the response object:
+response.status
+response.body
+response.headers
+
+Url object 
+var Url = Hottap("http://asdf.com/asdf?some_var=some_value#testhash");
+Url.port = 80
+Url.protocol = "http"
+Url.path = "/asdf"
+Url.hostname = "asdf.com"
+Url.hash = "testhash"
+Url.querystring.some_var =  some_value 
+
+TODO: 
+make https work.
+make username/password in url work
+
+Running the Tests:
+Running tests requires a few dependencies (listed in package.json).  To install them, simply type:
+
+npm install
+
+...then just run 'mocha' at the project root.
