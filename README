@@ -40,10 +40,11 @@ Invalid Urls will throw exceptions!
 TODO: 
 make https work.
 make username/password in url work
+make mocha run without --ignore-leaks
 
 Running the Tests:
 Running tests requires a few dependencies (listed in package.json).  To install them, simply type:
 
 npm install
 
-...then just run 'mocha' at the project root.
+...then just run 'mocha --ignore-leaks' at the project root.
