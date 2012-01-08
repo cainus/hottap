@@ -1,0 +1,6 @@
+running tests requires mocha:
+
+npm install -g mocha
+
+then just run 'mocha' at the project root.
+
