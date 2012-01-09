@@ -242,6 +242,8 @@ describe('HotTap', function(){
     }*/);
 
     it('should pass on the provided headers');  // how do I check this?  better server?
+    it('should pass on the provided querystring');  // how do I check this?  better server?
+    it('should pass on the provided hash');  // how do I check this?  better server?
 
     // pending because it takes too long, and mocha's timeout seems to be buggy
     it('should handle large response bodies' /*, function(done){

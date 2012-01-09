@@ -74,7 +74,7 @@ var url_request = function(){
     var options = {
       host: this.hostname,
       port: this.port,
-      path: this.path,
+      path: optionPath(this),
       headers: headers,
       method: method
     };
@@ -102,22 +102,27 @@ var url_request = function(){
 
 }
 
-var url_toString = function(){
-  var portstr = ':' + this.port;
-  if (this.protocol == 'http' && this.port == '80') portstr = '';
-  if (this.protocol == 'https' && this.port == '443') portstr = '';
+// get *everything* after the hostname/port
+var optionPath = function(http_obj){
   var qstr = ''
   var pairs = [];
-  for (var name in this.query){
-    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(this.query[name]))
+  for (var name in http_obj.query){
+    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(http_obj.query[name]))
   }
   qstr = pairs.join("&");
   if (qstr != ''){
     qstr = '?' + qstr;
   }
-  var hashstr = (this.hash == '') ? '' : '#' + this.hash;
+  var hashstr = (http_obj.hash == '') ? '' : '#' + http_obj.hash;
+  return http_obj.path + qstr + hashstr
+}
+
+var url_toString = function(){
+  var portstr = ':' + this.port;
+  if (this.protocol == 'http' && this.port == '80') portstr = '';
+  if (this.protocol == 'https' && this.port == '443') portstr = '';
   var authstr = (this.auth == '') ? '' : this.auth + '@';
-  return this.protocol + '://' + authstr + this.hostname + portstr + this.path + qstr + hashstr;
+  return this.protocol + '://' + authstr + this.hostname + portstr + optionPath(this);
 }
 
 var Url = function(url){
