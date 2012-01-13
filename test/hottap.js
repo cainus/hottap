@@ -1,6 +1,8 @@
 const should = require('should');
 var http = require('http');
 var https = require('https');
+const express = require('express');
+const fs = require('fs');
 const HotTap = require('../hottap').HotTap;
 
 
@@ -100,7 +102,7 @@ describe('HotTap', function(){
       done();
   });
 
-  it('should have return its path when set', function(done){
+  it('should return its path when set', function(done){
       HotTap("http://asdf.museum/this/is/the/path").path.should.equal('/this/is/the/path');
       done();
   });
@@ -221,32 +223,89 @@ describe('HotTap', function(){
       });
     });
 
-    // pending because I don't know how to make an https server that listens
-    it('should support GET via https' /* , function(done){
-      var server = https.createServer(function (req, res) {
+    it('should support GET via https', function(done){
+      var options = {
+        key: fs.readFileSync(__dirname + '/agent2-key.pem'),
+        cert: fs.readFileSync(__dirname + '/agent2-cert.pem')
+      };
+      var app = express.createServer(options);
+      app.get('/', function (req, res) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       })
 
-      server.listen(1337, "127.0.0.1", function(){
+      app.listen(1337, "127.0.0.1", function(){
           HotTap("https://127.0.0.1:1337").request("GET", function(error, response){
+            app.close();
             if (!!error) { should.fail(error); }
             response.body.should.equal('Hello World\nGET');
             response.status.should.equal(200);
             response.should.have.property('headers');
-            server.close();
             done();
           });
 
       });
-    }*/);
+    });
 
-    it('should pass on the provided headers');  // how do I check this?  better server?
-    it('should pass on the provided querystring');  // how do I check this?  better server?
-    it('should pass on the provided hash');  // how do I check this?  better server?
+    it('should pass on the provided headers', function(done){
+      var app = express.createServer();
+      app.get('/', function (req, res) {
+        req.headers['content-type'].should.equal('application/json');
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      })
+      app.listen(1337, "127.0.0.1", function(){
+          HotTap("http://127.0.0.1:1337")
+              .request("GET", {'Content-Type' : 'application/json'}, function(error, response){
+            app.close();
+            if (!!error) { should.fail(error); }
+            response.body.should.equal('Hello World\nGET');
+            response.status.should.equal(200);
+            response.should.have.property('headers');
+            response.headers['content-type'].should.equal('text/plain');
+            done();
+          });
+      });
+    });
 
-    // pending because it takes too long, and mocha's timeout seems to be buggy
-    it('should handle large response bodies' /*, function(done){
+    it('should pass on the provided querystring', function(done){
+      var app = express.createServer();
+      app.get('/', function (req, res) {
+        req.param('this').should.equal('is')
+        req.param('a').should.equal('test')
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      })
+      app.listen(1337, "127.0.0.1", function(){
+          HotTap("http://127.0.0.1:1337?this=is&a=test")
+              .request("GET", function(error, response){
+            app.close();
+            if (!!error) { should.fail(error); }
+            response.status.should.equal(200);
+            done();
+          });
+      });
+    });
+
+    it('should not pass on the provided hash', function(done){
+      var app = express.createServer();
+      app.get('/', function (req, res) {
+        req.param('x').should.equal('y')
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Hello World\n' + req.method);
+      })
+      app.listen(1337, "127.0.0.1", function(){
+          HotTap("http://127.0.0.1:1337?x=y#wakawaka")
+              .request("GET", function(error, response){
+            app.close();
+            if (!!error) { should.fail(error); }
+            response.status.should.equal(200);
+            done();
+          });
+      });
+    });
+
+    it('should handle large response bodies' , function(done){
       this.timeout(10000);
       var server = http.createServer(function (req, res) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -259,18 +318,63 @@ describe('HotTap', function(){
 
       server.listen(1337, "127.0.0.1", function(){
           HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
+            server.close();
             if (!!error) { should.fail(error); }
             response.body.length.should.equal(10000004);
             response.status.should.equal(200);
             response.should.have.property('headers');
-            server.close();
             done();
           });
 
       });
-    
-    }*/);
+    });
 
   });
 
+  describe('#json()', function(){
+    it('should set json content-type and accept headers', function(done){
+
+      this.timeout(10000);
+      // patch express
+      express.bodyParser.parse['application/json'] = function(req, options, fn){
+        var buf = '';
+        req.setEncoding('utf8');
+        req.on('data', function(chunk){ buf += chunk });
+        req.on('end', function(){
+          try {
+            req.body = JSON.parse(buf)
+          } catch (err){
+            req.error = buf;
+          }
+          fn();
+        });
+      };
+
+      var app = express.createServer();
+      app.configure(function(){
+        app.use(express.bodyParser());
+      });
+      app.post('/', function (req, res) {
+        should.exist(req.body);
+        req.body['asdf'].should.equal('asdf');
+        req.headers['content-type'].should.equal('application/json');
+        req.headers['accept'].should.equal('application/json');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(req.body));
+        res.end();
+      })
+      app.listen(1337, "127.0.0.1", function(){
+          HotTap("http://127.0.0.1:1337")
+              .json("POST", {}, {"asdf" : "asdf"}, function(error, response){
+            app.close();
+            if (!!error) { should.fail(error); }
+            response.body['asdf'].should.equal('asdf');
+            response.status.should.equal(200);
+            response.should.have.property('headers');
+            response.headers['content-type'].should.equal('application/json');
+            done();
+          });
+      });
+    });
+  });
 });
