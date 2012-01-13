@@ -53,6 +53,6 @@ To run the tests, at the project root, simply type:
 
 ##JSON convenience method:
     const HotTap = require('hottap').HotTap;
-    Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}', function(err, response){
+    Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}, function(err, response){
         console.log(response.body.subject);  // "blah"
     });
