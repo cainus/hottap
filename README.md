@@ -1,6 +1,10 @@
 #HotTap is an HTTP client library for node that just does what you expect.
 
-hottap.js has no dependencies other than the node standard library.
+HotTap is a node.js library for doing http requests that is simpler (IMO) than the standard 
+library, without trying to do much else.  I think it's a 'just-enough abstraction' over http 
+to avoid leakiness and is probably useful for 90% of the common use-cases. 
+
+It has no dependencies other than the node standard library.
 
 ##Example Usage:
 
@@ -46,3 +50,9 @@ Running tests requires a few dependencies (listed in package.json).  To install 
 To run the tests, at the project root, simply type:
 
     mocha
+
+JSON convenience method:
+    const HotTap = require('hottap').HotTap;
+    Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}', function(err, response){
+                  console.log(response.body.subject);  // "blah"
+    });
