@@ -1,0 +1,254 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+info using npm@1.0.30
+info using node@v0.4.7
+verbose config file /home/cainus/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose publish [ '.' ]
+silly testEngine { name: 'hottap',
+silly testEngine   main: './hottap',
+silly testEngine   description: 'An HTTP client library for node that just does what you expect.',
+silly testEngine   version: '1.0.0',
+silly testEngine   keywords: [ 'http', 'client' ],
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'Gregg Caines',
+silly testEngine        email: 'gregg@caines.ca',
+silly testEngine        url: 'http://caines.ca' } ],
+silly testEngine   devDependencies: { express: '2.2.0', mocha: '0.3.6', should: '0.3.2' },
+silly testEngine   _npmJsonOpts: 
+silly testEngine    { file: '/home/cainus/hottap/package.json',
+silly testEngine      wscript: false,
+silly testEngine      contributors: false,
+silly testEngine      serverjs: false },
+silly testEngine   _id: 'hottap@1.0.0',
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.7',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   scripts: {} }
+verbose caching /home/cainus/hottap/package.json
+verbose loadDefaults hottap@1.0.0
+info prepublish hottap@1.0.0
+verbose cache add [ '.', null ]
+silly cache add: name, spec, args [ undefined, '.', [ '.', null ] ]
+verbose parsed url { pathname: '.', href: '.' }
+silly testEngine { name: 'hottap',
+silly testEngine   main: './hottap',
+silly testEngine   description: 'An HTTP client library for node that just does what you expect.',
+silly testEngine   version: '1.0.0',
+silly testEngine   keywords: [ 'http', 'client' ],
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'Gregg Caines',
+silly testEngine        email: 'gregg@caines.ca',
+silly testEngine        url: 'http://caines.ca' } ],
+silly testEngine   devDependencies: { express: '2.2.0', mocha: '0.3.6', should: '0.3.2' },
+silly testEngine   _npmJsonOpts: 
+silly testEngine    { file: 'package.json',
+silly testEngine      wscript: false,
+silly testEngine      contributors: false,
+silly testEngine      serverjs: false },
+silly testEngine   _id: 'hottap@1.0.0',
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.7',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   path: '/home/cainus/hottap',
+silly testEngine   bundleDependencies: [] }
+verbose caching package.json
+verbose loadDefaults hottap@1.0.0
+verbose pack /home/cainus/hottap /tmp/npm-1326564897134/1326564897134-0.6528947534970939/tmp.tgz
+verbose mkdir (expected) error ENOENT, No such file or directory '/tmp/npm-1326564897134'
+verbose mkdir (expected) error ENOENT, No such file or directory '/tmp/npm-1326564897134/1326564897134-0.6528947534970939'
+verbose mkdir done: /tmp/npm-1326564897134/1326564897134-0.6528947534970939 755
+verbose mkdir'ed /tmp/npm-1326564897134/1326564897134-0.6528947534970939
+verbose tar about to write tar and gzip it.
+silly tar args [ '-cvf',
+silly tar args   '-',
+silly tar args   'hottap/hottap.js',
+silly tar args   'hottap/.gitignore',
+silly tar args   'hottap/package.json',
+silly tar args   'hottap/README.md',
+silly tar args   'hottap/test/hottap.js',
+silly tar args   'hottap/test/agent2-cert.pem',
+silly tar args   'hottap/test/agent2-key.pem' ]
+verbose success tar -cvf - <file list elided>
+verbose mkdir (expected) error ENOENT, No such file or directory '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents'
+verbose mkdir (expected) error ENOENT, No such file or directory '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm'
+verbose mkdir done: /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package
+silly gunzTarPerm modes [ '755', '644' ]
+verbose success gzip "--stdout"
+verbose success gzip "--decompress" "--stdout" "/tmp/npm-1326564897134/1326564897134-0.6528947534970939/tmp.tgz"
+verbose success tar "-mvxpf" "-" "-o" "-C" "/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm"
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/hottap.js
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/.gitignore
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/package.json
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/README.md
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/test/
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/test/hottap.js
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/test/agent2-cert.pem
+silly asyncMap in gTP /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap/test/agent2-key.pem
+verbose gunzed /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap
+verbose rm'ed /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package
+verbose renamed [ '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/___package.npm/hottap',
+verbose renamed   '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package' ]
+silly testEngine { name: 'hottap',
+silly testEngine   main: './hottap',
+silly testEngine   description: 'An HTTP client library for node that just does what you expect.',
+silly testEngine   version: '1.0.0',
+silly testEngine   keywords: [ 'http', 'client' ],
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'Gregg Caines',
+silly testEngine        email: 'gregg@caines.ca',
+silly testEngine        url: 'http://caines.ca' } ],
+silly testEngine   devDependencies: { express: '2.2.0', mocha: '0.3.6', should: '0.3.2' },
+silly testEngine   _npmJsonOpts: 
+silly testEngine    { file: '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package/package.json',
+silly testEngine      wscript: false,
+silly testEngine      contributors: false,
+silly testEngine      serverjs: false },
+silly testEngine   _id: 'hottap@1.0.0',
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.7',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   path: '/tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package' }
+verbose caching /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package/package.json
+verbose loadDefaults hottap@1.0.0
+verbose tarball contents [ 'package' ]
+verbose from cache /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package/package.json
+verbose pack /tmp/npm-1326564897134/1326564897134-0.6528947534970939/contents/package /home/cainus/.npm/hottap/1.0.0/package.tgz
+verbose mkdir'ed /home/cainus/.npm/hottap/1.0.0
+verbose tar about to write tar and gzip it.
+silly tar args [ '-cvf',
+silly tar args   '-',
+silly tar args   'package/hottap.js',
+silly tar args   'package/.gitignore',
+silly tar args   'package/package.json',
+silly tar args   'package/README.md',
+silly tar args   'package/test/hottap.js',
+silly tar args   'package/test/agent2-cert.pem',
+silly tar args   'package/test/agent2-key.pem' ]
+verbose success tar -cvf - <file list elided>
+verbose success gzip "--stdout"
+verbose mkdir (expected) error ENOENT, No such file or directory '/home/cainus/.npm/hottap/1.0.0/___package.npm'
+verbose mkdir done: /home/cainus/.npm/hottap/1.0.0/___package.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/cainus/.npm/hottap/1.0.0/package
+silly gunzTarPerm modes [ '755', '644' ]
+verbose success gzip "--decompress" "--stdout" "/home/cainus/.npm/hottap/1.0.0/package.tgz"
+verbose success tar "-mvxpf" "-" "-o" "-C" "/home/cainus/.npm/hottap/1.0.0/___package.npm"
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/hottap.js
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/.gitignore
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/package.json
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/README.md
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/test/
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/test/hottap.js
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/test/agent2-cert.pem
+silly asyncMap in gTP /home/cainus/.npm/hottap/1.0.0/___package.npm/package/test/agent2-key.pem
+verbose gunzed /home/cainus/.npm/hottap/1.0.0/___package.npm/package
+verbose rm'ed /home/cainus/.npm/hottap/1.0.0/package
+verbose renamed [ '/home/cainus/.npm/hottap/1.0.0/___package.npm/package',
+verbose renamed   '/home/cainus/.npm/hottap/1.0.0/package' ]
+silly testEngine { name: 'hottap',
+silly testEngine   main: './hottap',
+silly testEngine   description: 'An HTTP client library for node that just does what you expect.',
+silly testEngine   version: '1.0.0',
+silly testEngine   keywords: [ 'http', 'client' ],
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'Gregg Caines',
+silly testEngine        email: 'gregg@caines.ca',
+silly testEngine        url: 'http://caines.ca' } ],
+silly testEngine   devDependencies: { express: '2.2.0', mocha: '0.3.6', should: '0.3.2' },
+silly testEngine   _npmJsonOpts: 
+silly testEngine    { file: '/home/cainus/.npm/hottap/1.0.0/package/package.json',
+silly testEngine      wscript: false,
+silly testEngine      contributors: false,
+silly testEngine      serverjs: false },
+silly testEngine   _id: 'hottap@1.0.0',
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.7',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   dist: 
+silly testEngine    { shasum: '79dfac1bf2e52e11e7f61a12e2e7b21d6e62560c',
+silly testEngine      tarball: 'http://registry.npmjs.org/hottap/-/hottap-1.0.0.tgz' } }
+verbose caching /home/cainus/.npm/hottap/1.0.0/package/package.json
+verbose loadDefaults hottap@1.0.0
+silly updated sha bytes 5515
+info shasum 79dfac1bf2e52e11e7f61a12e2e7b21d6e62560c
+info shasum /home/cainus/.npm/hottap/1.0.0/package.tgz
+verbose from cache /home/cainus/.npm/hottap/1.0.0/package/package.json
+verbose chmod /home/cainus/.npm/hottap/1.0.0/package.tgz 644
+silly publish { name: 'hottap',
+silly publish   main: './hottap',
+silly publish   description: 'An HTTP client library for node that just does what you expect.',
+silly publish   version: '1.0.0',
+silly publish   keywords: [ 'http', 'client' ],
+silly publish   maintainers: 
+silly publish    [ { name: 'Gregg Caines',
+silly publish        email: 'gregg@caines.ca',
+silly publish        url: 'http://caines.ca' } ],
+silly publish   devDependencies: { express: '2.2.0', mocha: '0.3.6', should: '0.3.2' },
+silly publish   _npmJsonOpts: 
+silly publish    { file: '/home/cainus/.npm/hottap/1.0.0/package/package.json',
+silly publish      wscript: false,
+silly publish      contributors: false,
+silly publish      serverjs: false },
+silly publish   _id: 'hottap@1.0.0',
+silly publish   dependencies: {},
+silly publish   engines: { node: '*' },
+silly publish   _engineSupported: true,
+silly publish   _npmVersion: '1.0.30',
+silly publish   _nodeVersion: 'v0.4.7',
+silly publish   _defaultsLoaded: true,
+silly publish   dist: 
+silly publish    { shasum: '79dfac1bf2e52e11e7f61a12e2e7b21d6e62560c',
+silly publish      tarball: 'http://registry.npmjs.org/hottap/-/hottap-1.0.0.tgz' } }
+verbose PUT hottap
+verbose raw, before any munging hottap
+verbose url resolving [ 'http://registry.npmjs.org/', './hottap' ]
+verbose url resolved http://registry.npmjs.org/hottap
+verbose GET hottap
+verbose raw, before any munging hottap
+verbose url resolving [ 'http://registry.npmjs.org/', './hottap' ]
+verbose url resolved http://registry.npmjs.org/hottap
+verbose PUT hottap/1.0.0/-tag/latest
+verbose raw, before any munging hottap/1.0.0/-tag/latest
+verbose url resolving [ 'http://registry.npmjs.org/',
+verbose url resolving   './hottap/1.0.0/-tag/latest' ]
+verbose url resolved http://registry.npmjs.org/hottap/1.0.0/-tag/latest
+ERR! Error sending version data
+ERR! Error: forbidden _npmUser field must be object
+ERR! (You probably need to upgrade your npm version): hottap/1.0.0/-tag/latest
+ERR!     at Request.callback (/usr/local/lib/node_modules/npm/lib/utils/npm-registry-client/request.js:179:12)
+ERR!     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/main.js:337:18)
+ERR!     at Request.emit (events.js:64:17)
+ERR!     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/main.js:305:16)
+ERR!     at IncomingMessage.emit (events.js:81:20)
+ERR!     at HTTPParser.onMessageComplete (http.js:133:23)
+ERR!     at Socket.ondata (http.js:1213:22)
+ERR!     at Socket._onReadable (net.js:681:27)
+ERR!     at IOWatcher.onReadable [as callback] (net.js:177:10)
+ERR! Report this *entire* log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Linux 3.0.0-13-generic
+ERR! command "node" "/usr/local/bin/npm" "publish"
+ERR! cwd /home/cainus/hottap
+ERR! node -v v0.4.7
+ERR! npm -v 1.0.30
+verbose exit [ 1, true ]
