@@ -2,7 +2,7 @@ const node_url = require('url');
 const http = require('http');
 const https = require('https');
 
-function HotTap(url){
+function hottap(url){
   return new Url(url);
 }
 
@@ -188,4 +188,4 @@ var Url = function(url){
   this.path = o.pathname || '/';
 }
 
-exports.HotTap = HotTap;
+exports.hottap = hottap;

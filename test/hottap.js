@@ -3,73 +3,73 @@ var http = require('http');
 var https = require('https');
 const express = require('express');
 const fs = require('fs');
-const HotTap = require('../hottap').HotTap;
+const hottap = require('../hottap').hottap;
 
 
 
-describe('HotTap', function(){
+describe('hottap', function(){
 
   it('should return its url as a string', function(done){
-    HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
-    HotTap("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
-    HotTap("http://asdf.com").toString().should.equal("http://asdf.com/")
+    hottap("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
+    hottap("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash").toString().should.equal("http://asdf:1234@asdf.com:8080/asdf?asdf=1234&qwer=4321#hash")
+    hottap("http://asdf.com").toString().should.equal("http://asdf.com/")
     done();
   });
 
   it('should return its querystring as an object', function(done){
-    HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.asdf.should.equal("1234")
-    HotTap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.qwer.should.equal("qwer")
+    hottap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.asdf.should.equal("1234")
+    hottap("http://asdf.com:8080/asdf?asdf=1234&qwer=qwer#somehash").query.qwer.should.equal("qwer")
     done();
   });
   
   it('should return its auth value as a string', function(done){
-    HotTap("http://someauth@asdf.com:8080/asdf#hash").auth.should.equal("someauth")
+    hottap("http://someauth@asdf.com:8080/asdf#hash").auth.should.equal("someauth")
     done();
   });
 
   it('should return its hash value as a string', function(done){
-    HotTap("http://asdf.com:8080/asdf#hash").hash.should.equal("hash")
+    hottap("http://asdf.com:8080/asdf#hash").hash.should.equal("hash")
     done();
   });
 
   it('should return an empty string for a hash if it has no value', function(done){
-    HotTap("http://asdf.com:8080/asdf#").hash.should.equal("")
+    hottap("http://asdf.com:8080/asdf#").hash.should.equal("")
     done();
   });
 
   it('should return an empty string for a hash if it is unset', function(done){
-    HotTap("http://asdf.com:8080/asdf").hash.should.equal("")
+    hottap("http://asdf.com:8080/asdf").hash.should.equal("")
     done();
   });
 
   it('should return its port when it is http and the port is not defined', function(done){
-    HotTap("http://asdf.com/asdf").port.should.equal('80')
+    hottap("http://asdf.com/asdf").port.should.equal('80')
     done();
   });
 
   it('should return its port when it is http and the port is not defined', function(done){
-    HotTap("https://asdf.com/asdf").port.should.equal('443')
+    hottap("https://asdf.com/asdf").port.should.equal('443')
     done();
   });
 
   it('should return its port when it is defined', function(done){
-    HotTap("http://asdf.com:82/asdf").port.should.equal('82')
+    hottap("http://asdf.com:82/asdf").port.should.equal('82')
     done();
   });
 
   it('should return its protocol when it is http', function(done){
-    HotTap("http://asdf.com").protocol.should.equal('http')
+    hottap("http://asdf.com").protocol.should.equal('http')
     done();
   });
 
   it('should return its protocol when it is https', function(done){
-    HotTap("https://asdf.com").protocol.should.equal('https')
+    hottap("https://asdf.com").protocol.should.equal('https')
     done();
   });
 
   it('should throw an exception when the protocol is unknown', function(done){
     try {
-      HotTap("ftp://asdf.com")
+      hottap("ftp://asdf.com")
       should.fail("Exception wasn't thrown!");
     } catch (err){
       err.should.equal("Unknown protocol.  Supported protocols are http and https.");
@@ -79,7 +79,7 @@ describe('HotTap', function(){
 
   it('should throw an exception when the protocol cannot be determined', function(done){
     try {
-      HotTap("~~~~")
+      hottap("~~~~")
       should.fail("Exception wasn't thrown!");
     } catch (err){
       err.should.equal("Missing protocol.  Supported protocols are http and https.");
@@ -89,7 +89,7 @@ describe('HotTap', function(){
 
   it('should raise exception when hostname does not exist', function(done){
       try {
-        HotTap("http://").hostname;
+        hottap("http://").hostname;
         should.fail("Exception wasn't thrown!");
       } catch (err) {
         err.should.equal("Missing hostname.");
@@ -98,17 +98,17 @@ describe('HotTap', function(){
   });
 
   it('should have a hostname', function(done){
-      HotTap("http://asdf.museum:8080/this/is/the/path").hostname.should.equal('asdf.museum');
+      hottap("http://asdf.museum:8080/this/is/the/path").hostname.should.equal('asdf.museum');
       done();
   });
 
   it('should return its path when set', function(done){
-      HotTap("http://asdf.museum/this/is/the/path").path.should.equal('/this/is/the/path');
+      hottap("http://asdf.museum/this/is/the/path").path.should.equal('/this/is/the/path');
       done();
   });
 
   it('should return its path as / when not set', function(done){
-      HotTap("http://asdf.museum").path.should.equal('/');
+      hottap("http://asdf.museum").path.should.equal('/');
       done();
   });
 
@@ -122,7 +122,7 @@ describe('HotTap', function(){
 
       server.listen(1337, "127.0.0.1", function(){
 
-          HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
+          hottap("http://127.0.0.1:1337").request("GET", function(error, response){
             if (!!error) { should.fail(error); }
             response.body.should.equal('Hello World\nGET');
             response.status.should.equal(200);
@@ -136,7 +136,7 @@ describe('HotTap', function(){
 
     it('should throw an exception if it does not get a callback parameter', function(done){
           try {
-            HotTap("http://127.0.0.1:1337").request("GET")
+            hottap("http://127.0.0.1:1337").request("GET")
             should.fail("exception was not raised")
           } catch (err){
             err.should.equal('request() expects a callback for the last parameter.')
@@ -151,7 +151,7 @@ describe('HotTap', function(){
       });
       server.listen(1337, "127.0.0.1", function(){
 
-          HotTap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:1337/api/message/")
             .request("GET", 
                      {"Content-Type" : "application/json"}, 
                      function(error, response){
@@ -169,7 +169,7 @@ describe('HotTap', function(){
 
     it('should throw an error for requests with an invalid headers object', function(done){
       try {
-          HotTap("http://127.0.0.1:1337/api/message/").request("GET", 42, 
+          hottap("http://127.0.0.1:1337/api/message/").request("GET", 42, 
                    function(err, response){ should.fail("should not get this far!") }
           );
       } catch (err) {
@@ -185,7 +185,7 @@ describe('HotTap', function(){
       });
       server.listen(1337, "127.0.0.1", function(){
 
-          HotTap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:1337/api/message/")
             .request("POST",
                      {"Content-Type" : "application/json"},
                      '{"some" : "json"}',
@@ -209,7 +209,7 @@ describe('HotTap', function(){
       });
       server.listen(1337, "127.0.0.1", function(){
 
-          HotTap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:1337/api/message/")
             .request("UNKNOWN_METHOD",
                      {"content-type" : "application/json"},
                      '{"some" : "json"}',
@@ -235,7 +235,7 @@ describe('HotTap', function(){
       })
 
       app.listen(1337, "127.0.0.1", function(){
-          HotTap("https://127.0.0.1:1337").request("GET", function(error, response){
+          hottap("https://127.0.0.1:1337").request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
             response.body.should.equal('Hello World\nGET');
@@ -255,7 +255,7 @@ describe('HotTap', function(){
         res.end('Hello World\n' + req.method);
       })
       app.listen(1337, "127.0.0.1", function(){
-          HotTap("http://127.0.0.1:1337")
+          hottap("http://127.0.0.1:1337")
               .request("GET", {'Content-Type' : 'application/json'}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -277,7 +277,7 @@ describe('HotTap', function(){
         res.end('Hello World\n' + req.method);
       })
       app.listen(1337, "127.0.0.1", function(){
-          HotTap("http://127.0.0.1:1337?this=is&a=test")
+          hottap("http://127.0.0.1:1337?this=is&a=test")
               .request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -295,7 +295,7 @@ describe('HotTap', function(){
         res.end('Hello World\n' + req.method);
       })
       app.listen(1337, "127.0.0.1", function(){
-          HotTap("http://127.0.0.1:1337?x=y#wakawaka")
+          hottap("http://127.0.0.1:1337?x=y#wakawaka")
               .request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -317,7 +317,7 @@ describe('HotTap', function(){
       })
 
       server.listen(1337, "127.0.0.1", function(){
-          HotTap("http://127.0.0.1:1337").request("GET", function(error, response){
+          hottap("http://127.0.0.1:1337").request("GET", function(error, response){
             server.close();
             if (!!error) { should.fail(error); }
             response.body.length.should.equal(10000004);
@@ -364,7 +364,7 @@ describe('HotTap', function(){
         res.end();
       })
       app.listen(1337, "127.0.0.1", function(){
-          HotTap("http://127.0.0.1:1337")
+          hottap("http://127.0.0.1:1337")
               .json("POST", {}, {"asdf" : "asdf"}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }

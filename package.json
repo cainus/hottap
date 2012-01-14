@@ -1,6 +1,16 @@
 {
-      "name": "harkener",
-      "version": "0.0.1",
+      "name": "hottap",
+      "main":"./hottap",
+      "description" : "An HTTP client library for node that just does what you expect.",
+      "version": "1.0.0",
+      "keywords" : ["http", "client"],
+      "maintainers": [
+       {
+           "name": "Gregg Caines",
+           "email": "gregg@caines.ca",
+           "web": "http://caines.ca",
+       } 
+      ],
       "dependencies": {
           "express" : "2.2.0",
           "mocha" : "0.3.6",
