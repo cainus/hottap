@@ -1,6 +1,6 @@
-#HotTap is an HTTP client library for node that just does what you expect.
+#hottap is an HTTP client library for node that just does what you expect.
 
-HotTap is a node.js library for doing http requests that is simpler (IMO) than the standard 
+hottap is a node.js library for doing http requests that is simpler (IMO) than the standard 
 library, without trying to do much else.  I think it's a 'just-enough abstraction' over http 
 to avoid leakiness and is probably useful for 90% of the common use-cases. 
 
@@ -9,13 +9,13 @@ It has no dependencies other than the node standard library.
 ##Example Usage:
 
 ###Simple GET:
-    const HotTap = require('hottap').HotTap;
+    const hottap = require('hottap').hottap;
     Hottap("https://asdf.com/api/message/1").request("GET", function(err, response){
       console.log(response.body);
     });
 
 ###Simple POST:
-    const HotTap = require('hottap').HotTap;
+    const hottap = require('hottap').hottap;
     Hottap("http://sdf.com/api/message/")
       .request("POST", 
                {"Content-Type" : "application/json"}, 
@@ -52,7 +52,7 @@ To run the tests, at the project root, simply type:
     mocha
 
 ##JSON convenience method:
-    const HotTap = require('hottap').HotTap;
+    const hottap = require('hottap').hottap;
     Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}, function(err, response){
         console.log(response.body.subject);  // "blah"
     });
