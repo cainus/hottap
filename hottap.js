@@ -159,7 +159,11 @@ var json_request = function(){
   body = JSON.stringify(body);
   var json_cb = function(error, response){
     if (!!response.body){
-      response.body = JSON.parse(response.body);
+      try {
+        response.body = JSON.parse(response.body);
+      } catch (err){
+        cb(err);
+      }
     }
     cb(error, response);
   }
