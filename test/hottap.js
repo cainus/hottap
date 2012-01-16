@@ -375,6 +375,50 @@ describe('hottap', function(){
             done();
           });
       });
+
     });
-  });
-});
+     it('should allow an empty json object', function(done){
+
+      this.timeout(10000);
+      // patch express
+      express.bodyParser.parse['application/json'] = function(req, options, fn){
+        var buf = '';
+        req.setEncoding('utf8');
+        req.on('data', function(chunk){ buf += chunk });
+        req.on('end', function(){
+          try {
+            req.body = JSON.parse(buf)
+          } catch (err){
+            req.error = buf;
+          }
+          fn();
+        });
+      };
+
+      var app = express.createServer();
+      app.configure(function(){
+        app.use(express.bodyParser());
+      });
+      app.post('/', function (req, res) {
+        should.exist(req.body);
+        ('*' + JSON.stringify(req.body) + '*').should.equal('*{}*');
+        req.headers['content-type'].should.equal('application/json');
+        req.headers['accept'].should.equal('application/json');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(req.body));
+        res.end();
+      })
+      app.listen(1337, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:1337")
+              .json("POST", {}, {}, function(error, response){
+            app.close();
+            if (!!error) { should.fail(error); }
+            JSON.stringify(response.body).should.equal('{}');
+            response.status.should.equal(200);
+            response.headers['content-type'].should.equal('application/json');
+            done();
+          });
+      });
+     });
+   });  // #json
+}); // #hottap
