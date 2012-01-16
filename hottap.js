@@ -79,7 +79,71 @@ var get_params = function(argz){
 }
 
 
-var url_request = function(){
+
+// get *everything* after the hostname/port
+var optionPath = function(http_obj){
+  var qstr = ''
+  var pairs = [];
+  for (var name in http_obj.query){
+    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(http_obj.query[name]))
+  }
+  qstr = pairs.join("&");
+  if (qstr != ''){
+    qstr = '?' + qstr;
+  }
+  var hashstr = (http_obj.hash == '') ? '' : '#' + http_obj.hash;
+  return http_obj.path + qstr + hashstr
+}
+
+
+
+var Url = function(url){
+  this.url_object = node_url.parse(url);
+  var o = this.url_object;
+  this.protocol = getProtocol(o);
+  this.query = getQueryString(o);
+  this.hash = '';
+  if (o.hash){
+    this.hash = o.hash.substring(1);
+  }
+  if (!o.hostname){
+    throw "Missing hostname.";
+  }
+  this.hostname = o.hostname;
+  this.port = getPort(o);
+  this.auth = o.auth || '';
+  //console.log(o);
+  this.path = o.pathname || '/';
+}
+
+Url.prototype.toString = function(){
+  var portstr = ':' + this.port;
+  if (this.protocol == 'http' && this.port == '80') portstr = '';
+  if (this.protocol == 'https' && this.port == '443') portstr = '';
+  var authstr = (this.auth == '') ? '' : this.auth + '@';
+  return this.protocol + '://' + authstr + this.hostname + portstr + optionPath(this);
+}
+
+Url.prototype.json = function(){
+  var params = get_params(arguments);
+  var method = params.method;
+  var cb = params.cb;
+  var headers = params.headers;
+  var body = params.body;
+  headers['content-type'] = 'application/json';
+  headers['accept'] = 'application/json';
+  body = JSON.stringify(body);
+  var json_cb = function(error, response){
+    if (!!response.body){
+      response.body = JSON.parse(response.body);
+    }
+    cb(error, response);
+  }
+  this.request(method, headers, body, json_cb);
+}
+
+
+Url.prototype.request = function(){
   var params = get_params(arguments);
   var method = params.method;
   var cb = params.cb;
@@ -123,69 +187,6 @@ var url_request = function(){
 
   req.end();
 
-}
-
-// get *everything* after the hostname/port
-var optionPath = function(http_obj){
-  var qstr = ''
-  var pairs = [];
-  for (var name in http_obj.query){
-    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(http_obj.query[name]))
-  }
-  qstr = pairs.join("&");
-  if (qstr != ''){
-    qstr = '?' + qstr;
-  }
-  var hashstr = (http_obj.hash == '') ? '' : '#' + http_obj.hash;
-  return http_obj.path + qstr + hashstr
-}
-
-var url_toString = function(){
-  var portstr = ':' + this.port;
-  if (this.protocol == 'http' && this.port == '80') portstr = '';
-  if (this.protocol == 'https' && this.port == '443') portstr = '';
-  var authstr = (this.auth == '') ? '' : this.auth + '@';
-  return this.protocol + '://' + authstr + this.hostname + portstr + optionPath(this);
-}
-
-var json_request = function(){
-  var params = get_params(arguments);
-  var method = params.method;
-  var cb = params.cb;
-  var headers = params.headers;
-  var body = params.body;
-  headers['content-type'] = 'application/json';
-  headers['accept'] = 'application/json';
-  body = JSON.stringify(body);
-  var json_cb = function(error, response){
-    if (!!response.body){
-      response.body = JSON.parse(response.body);
-    }
-    cb(error, response);
-  }
-  this.request(method, headers, body, json_cb);
-}
-
-var Url = function(url){
-  this.request = url_request;
-  this.json = json_request;
-  this.toString = url_toString;
-  this.url_object = node_url.parse(url);
-  var o = this.url_object;
-  this.protocol = getProtocol(o);
-  this.query = getQueryString(o);
-  this.hash = '';
-  if (o.hash){
-    this.hash = o.hash.substring(1);
-  }
-  if (!o.hostname){
-    throw "Missing hostname.";
-  }
-  this.hostname = o.hostname;
-  this.port = getPort(o);
-  this.auth = o.auth || '';
-  //console.log(o);
-  this.path = o.pathname || '/';
 }
 
 exports.hottap = hottap;
