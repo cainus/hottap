@@ -9,13 +9,13 @@ It has no dependencies other than the node standard library.
 ##Example Usage:
 
 ###Simple GET:
-    const hottap = require('hottap').hottap;
+    var hottap = require('hottap').hottap;
     Hottap("https://asdf.com/api/message/1").request("GET", function(err, response){
       console.log(response.body);
     });
 
 ###Simple POST:
-    const hottap = require('hottap').hottap;
+    var hottap = require('hottap').hottap;
     Hottap("http://sdf.com/api/message/")
       .request("POST", 
                {"Content-Type" : "application/json"}, 
@@ -52,7 +52,7 @@ To run the tests, at the project root, simply type:
     mocha
 
 ##JSON convenience method:
-    const hottap = require('hottap').hottap;
+    var hottap = require('hottap').hottap;
     Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}, function(err, response){
         console.log(response.body.subject);  // "blah"
     });
