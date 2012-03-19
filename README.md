@@ -1,5 +1,7 @@
 #hottap is an HTTP client library for node that just does what you expect.
 
+[![Build Status](https://secure.travis-ci.org/cainus/hottap.png?branch=master)](http://travis-ci.org/cainus/hottap)
+
 hottap is a node.js library for doing http requests that is simpler (IMO) than the standard 
 library, without trying to do much else.  I think it's a 'just-enough abstraction' over http 
 to avoid leakiness and is probably useful for 90% of the common use-cases. 
