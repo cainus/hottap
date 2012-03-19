@@ -134,8 +134,14 @@ Url.prototype.json = function(){
   headers['accept'] = 'application/json';
   body = JSON.stringify(body);
   var json_cb = function(error, response){
-    if (!!response.body){
-      response.body = JSON.parse(response.body);
+    if (!!response && !!response.body){
+      try {
+        response.body = JSON.parse(response.body);
+      } catch (ex) {
+        // do nothing.
+        // we want to catch any possible parsing exception
+        // and just leave the body as-is
+      }
     }
     cb(error, response);
   }

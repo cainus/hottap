@@ -2,8 +2,14 @@
       "name": "hottap",
       "main":"./hottap",
       "description" : "An HTTP client library for node that just does what you expect.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "keywords" : ["http", "client"],
+      "bugs": {
+               "url": "https://github.com/cainus/hottap/issues"
+      },
+      "scripts" : {
+                "test" : "make test"
+      },
       "maintainers": [
        {
            "name": "Gregg Caines",

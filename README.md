@@ -10,13 +10,13 @@ It has no dependencies other than the node standard library.
 
 ###Simple GET:
     var hottap = require('hottap').hottap;
-    Hottap("https://asdf.com/api/message/1").request("GET", function(err, response){
+    hottap("https://asdf.com/api/message/1").request("GET", function(err, response){
       console.log(response.body);
     });
 
 ###Simple POST:
     var hottap = require('hottap').hottap;
-    Hottap("http://sdf.com/api/message/")
+    hottap("http://sdf.com/api/message/")
       .request("POST", 
                {"Content-Type" : "application/json"}, 
                '{"subject":"blah"}', 
