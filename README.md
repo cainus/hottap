@@ -33,7 +33,7 @@ It has no dependencies other than the node standard library.
     response.headers // headers as an object/hash
 
 ##About the Url object 
-    var url = Hottap("http://login:password@asdf.com/some/path?some_var=some_value#testhash");
+    var url = hottap("http://login:password@asdf.com/some/path?some_var=some_value#testhash");
     url.port = 80
     url.protocol = "http"
     url.path = "/some/path"
@@ -55,6 +55,6 @@ To run the tests, at the project root, simply type:
 
 ##JSON convenience method:
     var hottap = require('hottap').hottap;
-    Hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}, function(err, response){
+    hottap("http://sdf.com/api/message/").json("POST", {}, {"subject":"blah"}, function(err, response){
         console.log(response.body.subject);  // "blah"
     });
