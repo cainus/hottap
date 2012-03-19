@@ -120,9 +120,9 @@ describe('hottap', function(){
         res.end('Hello World\n' + req.method);
       })
 
-      server.listen(1337, "127.0.0.1", function(){
+      server.listen(9999, "127.0.0.1", function(){
 
-          hottap("http://127.0.0.1:1337").request("GET", function(error, response){
+          hottap("http://127.0.0.1:9999").request("GET", function(error, response){
             if (!!error) { should.fail(error); }
             response.body.should.equal('Hello World\nGET');
             response.status.should.equal(200);
@@ -136,7 +136,7 @@ describe('hottap', function(){
 
     it('should throw an exception if it does not get a callback parameter', function(done){
           try {
-            hottap("http://127.0.0.1:1337").request("GET")
+            hottap("http://127.0.0.1:9999").request("GET")
             should.fail("exception was not raised")
           } catch (err){
             err.should.equal('request() expects a callback for the last parameter.')
@@ -149,9 +149,9 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       });
-      server.listen(1337, "127.0.0.1", function(){
+      server.listen(9999, "127.0.0.1", function(){
 
-          hottap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:9999/api/message/")
             .request("GET", 
                      {"Content-Type" : "application/json"}, 
                      function(error, response){
@@ -169,7 +169,7 @@ describe('hottap', function(){
 
     it('should throw an error for requests with an invalid headers object', function(done){
       try {
-          hottap("http://127.0.0.1:1337/api/message/").request("GET", 42, 
+          hottap("http://127.0.0.1:9999/api/message/").request("GET", 42, 
                    function(err, response){ should.fail("should not get this far!") }
           );
       } catch (err) {
@@ -183,9 +183,9 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method );
       });
-      server.listen(1337, "127.0.0.1", function(){
+      server.listen(9999, "127.0.0.1", function(){
 
-          hottap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:9999/api/message/")
             .request("POST",
                      {"Content-Type" : "application/json"},
                      '{"some" : "json"}',
@@ -207,9 +207,9 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       });
-      server.listen(1337, "127.0.0.1", function(){
+      server.listen(9999, "127.0.0.1", function(){
 
-          hottap("http://127.0.0.1:1337/api/message/")
+          hottap("http://127.0.0.1:9999/api/message/")
             .request("UNKNOWN_METHOD",
                      {"content-type" : "application/json"},
                      '{"some" : "json"}',
@@ -234,8 +234,8 @@ describe('hottap', function(){
         res.end('Hello World\n' + req.method);
       })
 
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("https://127.0.0.1:1337").request("GET", function(error, response){
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("https://127.0.0.1:9999").request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
             response.body.should.equal('Hello World\nGET');
@@ -254,8 +254,8 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999")
               .request("GET", {'Content-Type' : 'application/json'}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -276,8 +276,8 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337?this=is&a=test")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999?this=is&a=test")
               .request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -294,8 +294,8 @@ describe('hottap', function(){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Hello World\n' + req.method);
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337?x=y#wakawaka")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999?x=y#wakawaka")
               .request("GET", function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -316,8 +316,8 @@ describe('hottap', function(){
         res.end(long_string + '\n' + req.method);
       })
 
-      server.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337").request("GET", function(error, response){
+      server.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999").request("GET", function(error, response){
             server.close();
             if (!!error) { should.fail(error); }
             response.body.length.should.equal(10000004);
@@ -363,8 +363,8 @@ describe('hottap', function(){
         res.write(JSON.stringify(req.body));
         res.end();
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999")
               .json("POST", {}, {"asdf" : "asdf"}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -408,8 +408,8 @@ describe('hottap', function(){
         res.write(JSON.stringify(req.body));
         res.end();
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999")
               .json("POST", {}, {}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
@@ -453,8 +453,8 @@ describe('hottap', function(){
         res.write("hey this isn't json!");
         res.end();
       })
-      app.listen(1337, "127.0.0.1", function(){
-          hottap("http://127.0.0.1:1337")
+      app.listen(9999, "127.0.0.1", function(){
+          hottap("http://127.0.0.1:9999")
               .json("POST", {}, {}, function(error, response){
             app.close();
             if (!!error) { should.fail(error); }
