@@ -1,25 +1,33 @@
 {
-      "name": "hottap",
-      "main":"./hottap",
-      "description" : "An HTTP client library for node that just does what you expect.",
-      "version": "1.0.1",
-      "keywords" : ["http", "client"],
-      "bugs": {
-               "url": "https://github.com/cainus/hottap/issues"
-      },
-      "scripts" : {
-                "test" : "make test"
-      },
-      "maintainers": [
-       {
-           "name": "Gregg Caines",
-           "email": "gregg@caines.ca",
-           "web": "http://caines.ca"
-       } 
-      ],
-      "devDependencies": {
-          "express" : "2.5.8",
-          "mocha" : "0.14.1",
-          "should" : "0.3.2"
-      }
+  "name": "hottap",
+  "main": "./hottap",
+  "description": "An HTTP client library for node that just does what you expect.",
+  "version": "1.1.0",
+  "keywords": [
+    "http",
+    "client"
+  ],
+  "bugs": {
+    "url": "https://github.com/cainus/hottap/issues"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "maintainers": [
+    {
+      "name": "Gregg Caines",
+      "email": "gregg@caines.ca",
+      "web": "http://caines.ca"
+    }
+  ],
+  "devDependencies": {
+    "express": "3.4.8",
+    "jshint": "2.4.3",
+    "istanbul": "0.2.4",
+    "mocha": "1.17.1",
+    "should": "3.1.2"
+  },
+  "dependencies": {
+    "tough-cookie": "0.12.1"
+  }
 }

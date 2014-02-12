@@ -1,6 +1,6 @@
-const node_url = require('url');
-const http = require('http');
-const https = require('https');
+var node_url = require('url');
+var http = require('http');
+var https = require('https');
 
 function hottap(url){
   return new Url(url);
@@ -16,13 +16,13 @@ var getPort = function(url_object){
        return '80';
     }
   }
-}
+};
 
 var getProtocol = function(url_object){
   if (typeof(url_object.protocol) == 'undefined'){
     throw 'Missing protocol.  Supported protocols are http and https.';
   } else {
-    var protocol = url_object.protocol
+    var protocol = url_object.protocol;
     if (!~(["https:", "http:"].indexOf(protocol))){
       throw 'Unknown protocol.  Supported protocols are http and https.';
     }
@@ -31,7 +31,7 @@ var getProtocol = function(url_object){
     }
     return protocol;
   }
-}
+};
 
 var getQueryString = function(url_object){
   var result = {},
@@ -39,12 +39,14 @@ var getQueryString = function(url_object){
       re = /([^&=]+)=([^&]*)/g,
       match;
 
-  while (match = re.exec(queryString)) {
+  match = re.exec(queryString);
+  while (match) {
     result[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+    match = re.exec(queryString);
   }
 
   return result;
-}
+};
 
 var get_params = function(argz){
 
@@ -55,45 +57,47 @@ var get_params = function(argz){
   if ((argz.length > 1) && (typeof(argz[argz.length - 1]) == 'function') ){
     cb = argz[argz.length - 1];
   } else {
-    throw "request() expects a callback for the last parameter." 
+    throw "request() expects a callback for the last parameter.";
   }
 
   // the second param should be 'headers' if it's not the callback.
+  var headers = {};
   if (argz.length > 2){
-      var headers = argz[1];
+      headers = argz[1];
       if (typeof(headers) != 'object'){
         throw 'Argument Error: Expected an (headers) object for the second argument.';
       }
   }
 
   // the third param should be the body if it's not the callback.
+  var body = '';
   if (argz.length > 3){
-    var body = argz[2];
+    body = argz[2];
   }
 
   return { "method" : method,
-           "body" : body || '',
-           "headers" : headers || {},
-           "cb" : cb}
+           "body" : body,
+           "headers" : headers,
+           "cb" : cb};
 
-}
+};
 
 
 
 // get *everything* after the hostname/port
 var optionPath = function(http_obj){
-  var qstr = ''
+  var qstr = '';
   var pairs = [];
   for (var name in http_obj.query){
-    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(http_obj.query[name]))
+    pairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(http_obj.query[name]));
   }
   qstr = pairs.join("&");
-  if (qstr != ''){
+  if (qstr !== ''){
     qstr = '?' + qstr;
   }
-  var hashstr = (http_obj.hash == '') ? '' : '#' + http_obj.hash;
-  return http_obj.path + qstr + hashstr
-}
+  var hashstr = (http_obj.hash === '') ? '' : '#' + http_obj.hash;
+  return http_obj.path + qstr + hashstr;
+};
 
 
 
@@ -114,15 +118,15 @@ var Url = function(url){
   this.auth = o.auth || '';
   //console.log(o);
   this.path = o.pathname || '/';
-}
+};
 
 Url.prototype.toString = function(){
   var portstr = ':' + this.port;
   if (this.protocol == 'http' && this.port == '80') portstr = '';
   if (this.protocol == 'https' && this.port == '443') portstr = '';
-  var authstr = (this.auth == '') ? '' : this.auth + '@';
+  var authstr = (this.auth === '') ? '' : this.auth + '@';
   return this.protocol + '://' + authstr + this.hostname + portstr + optionPath(this);
-}
+};
 
 Url.prototype.json = function(){
   var params = get_params(arguments);
@@ -131,7 +135,7 @@ Url.prototype.json = function(){
   var headers = params.headers;
   var body = params.body;
   headers['content-type'] = 'application/json';
-  headers['accept'] = 'application/json';
+  headers.accept = 'application/json';
   body = JSON.stringify(body);
   var json_cb = function(error, response){
     if (!!response && !!response.body){
@@ -144,9 +148,9 @@ Url.prototype.json = function(){
       }
     }
     cb(error, response);
-  }
+  };
   this.request(method, headers, body, json_cb);
-}
+};
 
 
 Url.prototype.request = function(){
@@ -156,7 +160,7 @@ Url.prototype.request = function(){
   var headers = params.headers;
   var body = params.body;
 
-  if (!!body && body != ''){
+  if (!!body && body !== ''){
     headers['Content-Length'] = body.length;
   }
 
@@ -187,12 +191,12 @@ Url.prototype.request = function(){
     cb(e);
   });
 
-  if (!!body && body != ''){
+  if (!!body && body !== ''){
     req.write(body);
   }
 
   req.end();
 
-}
+};
 
 exports.hottap = hottap;
