@@ -28,6 +28,6 @@
     "should": "3.1.2"
   },
   "dependencies": {
-    "tough-cookie": "0.12.1"
+    "tough-cookie": "3.0.1"
   }
 }
