@@ -21,7 +21,7 @@
     }
   ],
   "devDependencies": {
-    "express": "3.4.8",
+    "express": "4.17.1",
     "jshint": "2.4.3",
     "istanbul": "0.2.4",
     "mocha": "1.17.1",
